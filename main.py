@@ -8,15 +8,62 @@ from colorama import Fore, Back, Style
 
 not_logged = True
 
-def menu():
-    if not_logged:
+def login():
+    while True:
+        usern = input("Please enter your username:  ")
+        passw = input("Please enter your password:  ")
+
+        with open("masterfile.txt", "r") as mf:
+            
+
+
+def register():
+    print("Welcome to the Wordle family!")
+    while True:
         while True:
-            ans = input("Would you like to log in to score your data? [y]es or [n]o?:  ")
+            usern = input("Please enter your username:  ")
+            ans = input("Are you sure you want " + usern + " to be your username? [y]es or [n]o?:  ")
+    
             if ans[0].lower() == "y":
-                print("works")
                 break
             elif ans[0].lower() == "n":
-                print("also works")
+                continue
+            else:
+                print("please enter a yes or a no.")
+
+        while True:
+            passw = input("Please enter your password:  ")
+            ans = input("Are you sure you want " + passw + " to be your password? [y]es or [n]o?:  ")
+
+            if ans[0].lower() == "y":
+                break
+            elif ans[0].lower() == "n":
+                continue
+            else:
+                print("please enter a yes or a no.")
+
+        user_list = ", ".join([usern, passw], )
+        with open("masterfile.txt", "a") as mf:
+            mf.write(user_list + "\n")
+        os.system('clear')
+        return
+    
+def menu():
+    global not_logged
+    if not_logged:
+        while True:
+            ans = input("Would you like to log in to score your data? [y]es, [n]o?, or do you need to [s]ign up:  ")
+            if ans[0].lower() == "y":
+                os.system("clear")
+                while True:
+                    break
+                break
+            elif ans[0].lower() == "s":
+                register()
+                print("Thank you for registering with us! Please use the login feature to login to your account.\n\n")
+                break
+            elif ans[0].lower() == "n":
+                not_logged = False
                 break
             else:
                 print("please enter yes or no")
@@ -39,7 +86,7 @@ while play_again != "q":
 
     os.system('clear')
     menu()
-    word = "files"
+    word = read_random_word()
     guess_list = []
 
     # need to fix this cause tutorial is strange and allows user to enter too big or too small words
