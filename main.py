@@ -1,20 +1,34 @@
 """
 Wordle project with a signup/login feature
+
+FIGURE OUT TIME SH-STUFF
 """
 import random as r
+from time import sleep
 import sys
 import os
 from colorama import Fore, Back, Style
 
 not_logged = True
 
-def login():
+with open("masterfile.txt", "r") as mf:
+    divided_file = mf.read().split('\n')
+    for i in range(len(divided_file)):
+        divided_file[i] = str(divided_file[i]).split(', ')
+
+def login(divided_file):
     while True:
         usern = input("Please enter your username:  ")
         passw = input("Please enter your password:  ")
 
         with open("masterfile.txt", "r") as mf:
-            
+            pass
+
+        for i in range(len(divided_file)):
+            if usern == divided_file[i][0] and passw == divided_file[i][1]:
+                print("Wow, you exist")
+                return i
+        break
 
 
 def register():
@@ -55,20 +69,20 @@ def menu():
             ans = input("Would you like to log in to score your data? [y]es, [n]o?, or do you need to [s]ign up:  ")
             if ans[0].lower() == "y":
                 os.system("clear")
-                while True:
-                    break
+                account_num = login(divided_file)
                 break
             elif ans[0].lower() == "s":
                 register()
                 print("Thank you for registering with us! Please use the login feature to login to your account.\n\n")
-                break
+                sleep(3)
             elif ans[0].lower() == "n":
-                not_logged = False
+                os.system("clear")
                 break
             else:
                 print("please enter yes or no")
     
     print("Let's play Wordle:\nType a 5 letter word and hit enter!\n")
+    return account_num + 1
 
 def read_random_word():
     with open("words.txt") as w:
@@ -81,11 +95,10 @@ def on_entered_line():
 
 play_again = ""
 streak = 0
+account_num = menu()
 
 while play_again != "q":
-
-    os.system('clear')
-    menu()
+    
     word = read_random_word()
     guess_list = []
 
@@ -124,5 +137,22 @@ while play_again != "q":
         streak = 0
 
     data = [guess_list, word, streak]
+
+    file = open("masterfile.txt", "r+")
+
+    line_list = []
+        
+    for line in file:
+        stripped_line = line.strip()
+        line_list.append(stripped_line)
+
+    line_list.append(data)
+
+    #Close, but no cigar, fix the major issues
+
+    file.write(str(line_list))
+
+    file.close()
+            
         
     play_again = input(Style.RESET_ALL + "\nenter q if you would like to quit, press enter to play again")
