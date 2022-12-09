@@ -1,7 +1,7 @@
 """
 Wordle project with a signup/login feature
 
-FIGURE OUT TIME SH-STUFF
+
 """
 import random as r
 from time import sleep
@@ -147,8 +147,6 @@ while play_again != "q":
         line_list.append(stripped_line)
 
     line_list.append(data)
-
-    #Close, but no cigar, fix the major issues
 
     file.write(str(line_list))
 
