@@ -3,6 +3,8 @@ Wordle project with a signup/login feature
 
 
 """
+
+# Imports all required libraries for the code to function
 import random as r
 from time import sleep
 import sys
@@ -12,25 +14,29 @@ from colorama import Fore, Back, Style
 not_logged = True
 
 
-
+# Checks if the user's Username and Password are in the masterfile
 def login(divided_file):
     
     while True:
         
         usern = input("Please enter your username:  ")
         passw = input("Please enter your password:  ")
-
         for i in range(len(divided_file)):
-            
+
             if usern == divided_file[i][0] and passw == divided_file[i][1]:
                 
                 print("User found")
                 sleep(2)
                 os.system("clear")
                 return i
+        print("\nPlease try again after making sure you're typing the right account information\n")
+        sleep(3)
+        os.system("clear")
 
 
+#Adds the account information into the masterfile that allows the user to login
 def register():
+    os.sys("clear")
     print("Welcome to the Wordle family!")
     while True:
         
@@ -68,7 +74,8 @@ def register():
             mf.write(user_list + "\n")
         os.system('clear')
         return
-    
+
+# Creates the menu that the player sees at the start of every game    
 def menu():
     global not_logged, account_num
             
@@ -87,6 +94,7 @@ def menu():
                 os.system("clear")
                 account_num = login(divided_file)
                 not_logged = False
+                os.system("clear")
                 print("Let's play Wordle:\nType a 5 letter word and hit enter!\n")
                 return account_num + 1
                 
@@ -106,6 +114,7 @@ def menu():
     print("Let's play Wordle:\nType a 5 letter word and hit enter!\n")
     return
 
+# Sets a random word from the words file
 def read_random_word():
     
     with open("words.txt") as w:
@@ -113,6 +122,7 @@ def read_random_word():
         
         return r.choice(words)
 
+# Uses system codes to make the code write on the previous line that was written, allows for the colors to appear on the text.
 def on_entered_line():
     
     sys.stdout.write('\x1b[1A')
@@ -121,13 +131,13 @@ def on_entered_line():
 play_again = ""
 streak = 0
 
+# The running loop that allows the game to play
 while play_again != "q":
     
     account_num = menu()
     word = read_random_word()
     guess_list = []
 
-    # need to fix this cause tutorial is strange and allows user to enter too big or too small words
     for attempt in range(1, 7):
         
         file = open("words.txt")
@@ -171,38 +181,8 @@ while play_again != "q":
         print(Style.RESET_ALL + Fore.RED + "So sorry, you didn't get the word...\n\nThe word was " + word)
         streak = 0
 
-    data = [guess_list, word, streak]
-
-    """
-    This whole section of code needs serious revising and might even need to be completely redone. as of now it produces this:
+    print("\n You currently have a streak of " + str(streak) + ". Continue playing to get a higher streak!\n")
     
-    Truth, 1234
-    Needs, 5678
-    Friend, 9999
-    ['Truth, 1234', 'Needs, 5678', 'Friend, 9999', [['fires', 'fires', 'fires', 'fires', 'fires', 'fires'], 'eaten', 0]] 
-    
-    when we need this:
-    
-    Truth, 1234, ['fires', 'fires', 'fires', 'fires', 'fires', 'fires'], 'eaten', 0
-    Needs, 5678
-    Friend, 9999
-    
-    """
-    
-    # file = open("masterfile.txt", "r+")
-
-    # line_list = []
-        
-    # for line in file:
-    #     stripped_line = line.strip()
-    #     line_list.append(stripped_line)
-
-    # line_list.append(data)
-
-    # file.write(str(line_list))
-
-    # file.close()   
-        
     play_again = input(Style.RESET_ALL + "\nenter q if you would like to quit, press enter to play again")
     
     os.system("clear")
