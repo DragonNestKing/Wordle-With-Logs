@@ -36,7 +36,7 @@ def login(divided_file):
 
 #Adds the account information into the masterfile that allows the user to login
 def register():
-    os.sys("clear")
+    os.system("clear")
     print("Welcome to the Wordle family!")
     while True:
         
@@ -67,11 +67,11 @@ def register():
             else:
                 print("please enter a yes or a no.")
 
-        user_list = ", ".join([usern, passw], )
+        user_list = ", ".join([usern, passw, str(0)])
         
         with open("masterfile.txt", "a") as mf:
             
-            mf.write(user_list + "\n")
+            mf.write("\n" + user_list)
         os.system('clear')
         return
 
@@ -135,7 +135,7 @@ streak = 0
 while play_again != "q":
     
     account_num = menu()
-    word = read_random_word()
+    word = "fives"
     guess_list = []
 
     for attempt in range(1, 7):
@@ -174,12 +174,38 @@ while play_again != "q":
         print()
         if guess == word:
             print(Style.RESET_ALL + Fore.GREEN + "Congrats! You got the wordle in " + str(attempt) + " attempt(s)!")
-            streak = streak + 1
+            streak = int(streak) + 1
             break
             
     if guess != word:
         print(Style.RESET_ALL + Fore.RED + "So sorry, you didn't get the word...\n\nThe word was " + word)
         streak = 0
+
+    # The code that saves the streak into the masterfile
+    while True:
+        with open("masterfile.txt", "r+") as file:
+            user = []
+            user_list = []
+    
+            for line in file:
+                user = line.strip().split(", ")
+                user_list.append(user)
+            
+            for i in range(len(user_list)):
+                user_list[i][2] = str(streak)
+    
+                    
+            file_return = []
+            
+            for i in range(len(user_list)):
+                user_list.append(', '.join(user_list[i]))
+    
+    
+        with open("masterfile.txt", "w") as file:
+            file.write(f"{user_list[0][0]}, {user_list[0][1]}, {user_list[0][2]}")
+        break
+            
+            
 
     print("\n You currently have a streak of " + str(streak) + ". Continue playing to get a higher streak!\n")
     

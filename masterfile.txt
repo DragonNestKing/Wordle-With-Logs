@@ -1,3 +1,1 @@
-Truth, 1234
-User, 3
-Dog, God
+Truth, 1234, 0
